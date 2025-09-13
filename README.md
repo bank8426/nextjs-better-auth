@@ -9,11 +9,10 @@
 5. [Features](#features)
 6. [Quick Start](#quick-start)
 7. [What I learned](#learn)
-8. [Implementation Notes](#implementation-notes)
 
 ## <a name="introduction">Introduction</a>
 
-TODO
+Basic authentication with Email/Password and Social Login(Google and Github) using Better-Auth, and store the user's data in the database
 
 ## <a name="note">⚠️ Note</a>
 
@@ -21,60 +20,33 @@ This project was implemented based on a tutorial video on YouTube from PedroTech
 
 ## <a name="demo">Demo</a>
 
-TODO
 Click on each section to toggle the demo image.
 
-<!--
 <details>
   <summary>
-    Authentication
+    Email/Password
   </summary>
   <b>Sign up</b>
   <div>
     <a href="">
-        <img src="public/readme/sign-up.gif" alt="Sign up" />
+        <img src="public/readme/signup-email.gif" alt="Sign up" />
     </a>
   </div>
   <b>Sign in</b>
   <div>
     <a href="">
-      <img src="public/readme/sign-in.gif" alt="Sign in" />
+      <img src="public/readme/signin-email.gif" alt="Sign in" />
     </a>
   </div>
 </details>
 <details>
   <summary>
-    Authenticated User
+    Google
   </summary>
   <div>
-    <b>Create Availability Schedule</b>
     <div>
       <a href="">
-        <img src="public/readme/create-schedule.gif" alt="Create schedule" />
-      </a>
-    </div>
-    <b>Create Active Event</b>
-    <div>
-      <a href="">
-        <img src="public/readme/create-active-event.gif" alt="Create active event" />
-      </a>
-    </div>
-    <b>Create Inactive Event</b>
-    <div>
-      <a href="">
-        <img src="public/readme/create-inactive-event.gif" alt="Create inactive event" />
-      </a>
-    </div>
-    <b>Edit Event</b>
-    <div>
-      <a href="">
-        <img src="public/readme/edit-event.gif" alt="Edit event" />
-      </a>
-    </div>
-    <b>Delete Event</b>
-    <div>
-      <a href="">
-        <img src="public/readme/delete-event.gif" alt="Delete event" />
+        <img src="public/readme/signin-google.gif" alt="Signin with Google" />
       </a>
     </div>
   </div>
@@ -82,45 +54,18 @@ Click on each section to toggle the demo image.
 
 <details>
   <summary>
-    Non-Authenticated User
+    Github
   </summary>
   <div>
-    <b>See Public profile from Profile's Link</b>
     <div>
       <a href="">
-        <img src="public/readme/public-profile.gif" alt="Public profile" />
-      </a>
-    </div>
-    <b>Booking Event from Event's link</b>
-    <div>
-      <a href="">
-        <img src="public/readme/see-and-book-event.gif" alt="See and book event" />
-      </a>
-    </div>
-    <b>Invitation Email</b>
-    <div>
-      <a href="">
-        <img src="public/readme/invitation-email.png" alt="Invitation Email" />
-      </a>
-    </div>
-    <b>Google Calendar after accept invitation</b>
-    <div>
-      <a href="">
-        <img src="public/readme/after-book-event.png" alt="See and book event" />
-      </a>
-    </div>
-    <b>Available time slot will be updated according to events in Google Calendar</b>
-    <div>
-      <a href="">
-        <img src="public/readme/google-calendar.png" alt="Google Calendar" />
+        <img src="public/readme/signin-github.gif" alt="Signin with Github" />
       </a>
     </div>
   </div>
-</details> -->
+</details>
 
 ## <a name="tech-stack">Tech Stack</a>
-
-TODO
 
 - Next.js - React framework for full-stack web application development
 - React - JavaScript library
@@ -133,14 +78,10 @@ TODO
 
 ## <a name="features">Features</a>
 
-TODO
-
-- 🔐 **Email/Password Authentication** — Secure sign-up and sign-in
-- 🌐 **Social Authentication** — Google and GitHub OAuth integration
-- 👤 **User Management** — Complete user profile and session handling
-- 🛡️ **Protected Routes** — Middleware-based route protection
-- 🔒 **Session Management** — Secure session handling with cookies
-- 🎨 **Modern Dashboard** — Clean, professional user interface
+- Email/Password Authentication
+- Google and GitHub OAuth integration
+- Complete user profile and session handling
+- Secure session handling with cookies
 
 ## <a name="quick-start">Quick Start</a>
 
@@ -169,11 +110,49 @@ npm install
 
 ### Set Up Environment Variables
 
-1. Create a new file named `.env` and copy the content inside `.env.example`
+1. Create a new file named `.env.local` and copy the content inside `.env.example`
 2. Replace the placeholder values with your actual credentials
 
 ```env
-TODO
+# https://www.better-auth.com/docs/installation - generate from step 2
+BETTER_AUTH_SECRET=
+BETTER_AUTH_URL=http://localhost:3000
+
+# https://github.com/settings/developers - create a new OAuth Apps
+GITHUB_CLIENT_ID=
+GITHUB_CLIENT_SECRET=
+
+# https://console.cloud.google.com/auth/clients - create a new OAuth Client
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+
+
+# https://console.neon.tech/ - create a new database and get the Connection string
+DATABASE_URL=
+```
+
+### Database Setup
+
+1. **Create your PostgreSQL database** (locally or using a cloud provider(e.g. neon))
+
+2. Create a new file named `.env`
+3. Replace the placeholder values with your actual credentials
+
+```env
+# https://console.neon.tech/ - create a new database and get the Connection string
+DATABASE_URL=
+```
+
+4. **Run Prisma migrations:**
+
+```bash
+npx prisma migrate dev --name init
+```
+
+5. **Generate Prisma client:**
+
+```bash
+npx prisma generate
 ```
 
 ### Running the Project
@@ -186,8 +165,4 @@ Your server will run on [http://localhost:3000](http://localhost:3000/)
 
 ## <a name="learn">What I learned</a>
 
-TODO
-
-## <a name="implementation-note">Implementation Notes</a>
-
-TODO
+- `Better Auth` - It provides functionality like `Auth.js` but without UI. The configuration seems to be easier than `Auth.js` since you can give the `database` and `adapter` that you use, and it will handle user information and session management for you (just need to add `nextCookies` as a plugin). It also works well with `Prisma` and `PostgreSQL` since Prisma can generate the schema for you.
