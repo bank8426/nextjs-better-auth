@@ -1,9 +1,12 @@
 "use client";
 
+import { auth } from "@/lib/auth";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-export default function Navigation() {
+type Session = typeof auth.$Infer.Session;
+
+export default function Navigation({ session }: { session: Session | null }) {
   const pathname = usePathname();
 
   const isActive = (path: string) => {
@@ -54,12 +57,14 @@ export default function Navigation() {
               Dashboard
             </Link>
 
-            <Link
-              href="/auth"
-              className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium transition-colors"
-            >
-              Sign In
-            </Link>
+            {!session && (
+              <Link
+                href="/auth"
+                className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+              >
+                Sign In
+              </Link>
+            )}
           </nav>
         </div>
       </div>
