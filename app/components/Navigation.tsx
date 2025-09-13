@@ -50,13 +50,14 @@ export default function Navigation({ session }: { session: Session | null }) {
               Home
             </Link>
 
-            <Link
-              href="/dashboard"
-              className="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700 transition-colors"
-            >
-              Dashboard
-            </Link>
-
+            {session && (
+              <Link
+                href="/dashboard"
+                className="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700 transition-colors"
+              >
+                Dashboard
+              </Link>
+            )}
             {!session && (
               <Link
                 href="/auth"

@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { signIn, signUp } from "@/lib/actions/auth-actions";
+import { redirect, useRouter, useSearchParams } from "next/navigation";
+import { signIn, signInSocial, signUp } from "@/lib/actions/auth-actions";
 
 export default function AuthClientPage() {
   const [isSignIn, setIsSignIn] = useState(true);
@@ -21,7 +21,7 @@ export default function AuthClientPage() {
     setError("");
 
     try {
-      console.log("Logged in with", provider);
+      await signInSocial(provider);
     } catch (err) {
       setError(
         `Error authenticating with ${provider}: ${
@@ -42,13 +42,15 @@ export default function AuthClientPage() {
       if (isSignIn) {
         const result = await signIn(email, password);
         if (!result.user) {
-          setError("Invalid email or password");
+          throw new Error("Invalid email or password");
         }
+        router.push("/dashboard");
       } else {
         const result = await signUp(email, password, name);
         if (!result.user) {
-          setError("Failed to create account");
+          throw new Error("Failed to create account");
         }
+        router.push("/dashboard");
       }
     } catch (err) {
       setError(
